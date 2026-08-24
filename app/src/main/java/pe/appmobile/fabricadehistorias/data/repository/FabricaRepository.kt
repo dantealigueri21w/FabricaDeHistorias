@@ -92,6 +92,9 @@ class FabricaRepository(private val db: AppDatabase) {
 
     fun observarFabulasTerminadas(): Flow<List<FabulaEntity>> = db.fabulaDao().observarTerminadas()
 
+    /** Las que el niño empezó y dejó a medias — el material real del Rincón de Práctica. */
+    suspend fun obtenerFabulasSinTerminar(): List<FabulaEntity> = db.fabulaDao().obtenerSinTerminar()
+
     /** Marca la fábula como terminada, evalúa insignias nuevas y devuelve las ganadas en esta jugada. */
     suspend fun terminarFabula(fabulaId: Long, titulo: String): Set<Insignia> {
         val fabula = db.fabulaDao().obtenerPorId(fabulaId) ?: return emptySet()

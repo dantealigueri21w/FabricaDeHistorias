@@ -24,6 +24,10 @@ interface FabulaDao {
     @Query("SELECT COUNT(*) FROM fabula WHERE terminada = 1")
     suspend fun contarTerminadas(): Int
 
+    /** Las que el niño empezó y dejó a medias: el material real del Rincón de Práctica. */
+    @Query("SELECT * FROM fabula WHERE terminada = 0 ORDER BY fechaCreacionEpochMillis DESC")
+    suspend fun obtenerSinTerminar(): List<FabulaEntity>
+
     @Query("SELECT COUNT(*) FROM fabula WHERE terminada = 1 AND usoLente = 1")
     suspend fun contarConLenteUsada(): Int
 
