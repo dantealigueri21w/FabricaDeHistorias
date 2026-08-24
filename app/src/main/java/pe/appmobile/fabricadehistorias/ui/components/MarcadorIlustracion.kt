@@ -21,8 +21,8 @@ import pe.appmobile.fabricadehistorias.ui.theme.DoradoLaton
 import pe.appmobile.fabricadehistorias.ui.theme.VioletaTinta
 
 /**
- * Ocupa el lugar de una ilustración que todavía no existe. El arte se genera
- * aparte (con Gemini, procesado y guardado en drawable-nodpi/); mientras tanto
+ * Ocupa el lugar de una ilustración que todavía no existe. El arte final se
+ * genera aparte y se procesa a `drawable-nodpi/`; mientras tanto
  * la app tiene que compilar, verse coherente y probarse de verdad — así que
  * este marcador usa la paleta real del taller, no un gris genérico, y nunca se
  * hace pasar por la ilustración final.
