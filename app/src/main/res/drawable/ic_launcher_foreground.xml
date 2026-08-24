@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Provisional: engranaje del taller con una pluma encima.
+         Se reemplaza por el icono ilustrado final. -->
+    <path android:fillColor="#E0A32E" android:pathData="M48,16h12v14h-12z" />
+    <path android:fillColor="#E0A32E" android:pathData="M48,78h12v14h-12z" />
+    <path android:fillColor="#E0A32E" android:pathData="M16,48h14v12h-14z" />
+    <path android:fillColor="#E0A32E" android:pathData="M78,48h14v12h-14z" />
+    <path
+        android:fillColor="#E0A32E"
+        android:pathData="M24,54a30,30 0 1,0 60,0a30,30 0 1,0 -60,0z" />
+    <path
+        android:fillColor="#4A3B8C"
+        android:pathData="M40,54a14,14 0 1,0 28,0a14,14 0 1,0 -28,0z" />
+    <path
+        android:fillColor="#FBF3E4"
+        android:pathData="M36,76L70,32l8,7L44,83z" />
+    <path
+        android:fillColor="#221F3B"
+        android:pathData="M36,76l8,7l-11,3z" />
+</vector>
