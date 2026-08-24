@@ -1,0 +1,599 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "6a906d588f1accfdde09aa3850aebe91",
+    "entities": [
+      {
+        "tableName": "perfil",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `alias` TEXT NOT NULL, `avatarId` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alias",
+            "columnName": "alias",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "avatarId",
+            "columnName": "avatarId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "animal",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `nombre` TEXT NOT NULL, `region` TEXT NOT NULL, `caracter` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "region",
+            "columnName": "region",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "caracter",
+            "columnName": "caracter",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "visitante",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `nombre` TEXT NOT NULL, `descripcion` TEXT NOT NULL, `herramienta` TEXT NOT NULL, `tradicionEvocada` TEXT NOT NULL, `encargoDelVisitante` TEXT NOT NULL, `orden` INTEGER NOT NULL, `recibido` INTEGER NOT NULL, `fechaRecibidoEpochMillis` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descripcion",
+            "columnName": "descripcion",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "herramienta",
+            "columnName": "herramienta",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tradicionEvocada",
+            "columnName": "tradicionEvocada",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "encargoDelVisitante",
+            "columnName": "encargoDelVisitante",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orden",
+            "columnName": "orden",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recibido",
+            "columnName": "recibido",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaRecibidoEpochMillis",
+            "columnName": "fechaRecibidoEpochMillis",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "encargo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `dificultad` TEXT NOT NULL, `textoAntuco` TEXT NOT NULL, `restriccion` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dificultad",
+            "columnName": "dificultad",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "textoAntuco",
+            "columnName": "textoAntuco",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "restriccion",
+            "columnName": "restriccion",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "fabula",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `titulo` TEXT NOT NULL, `animalAId` TEXT NOT NULL, `animalBId` TEXT NOT NULL, `encargoId` TEXT, `terminada` INTEGER NOT NULL, `fechaCreacionEpochMillis` INTEGER NOT NULL, `fechaTerminadaEpochMillis` INTEGER, `usoLente` INTEGER NOT NULL, `cumplioReglaDeTres` INTEGER NOT NULL, `esBurladorBurlado` INTEGER NOT NULL, FOREIGN KEY(`animalAId`) REFERENCES `animal`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`animalBId`) REFERENCES `animal`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`encargoId`) REFERENCES `encargo`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "titulo",
+            "columnName": "titulo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "animalAId",
+            "columnName": "animalAId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "animalBId",
+            "columnName": "animalBId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "encargoId",
+            "columnName": "encargoId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "terminada",
+            "columnName": "terminada",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaCreacionEpochMillis",
+            "columnName": "fechaCreacionEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaTerminadaEpochMillis",
+            "columnName": "fechaTerminadaEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "usoLente",
+            "columnName": "usoLente",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cumplioReglaDeTres",
+            "columnName": "cumplioReglaDeTres",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "esBurladorBurlado",
+            "columnName": "esBurladorBurlado",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_fabula_animalAId",
+            "unique": false,
+            "columnNames": [
+              "animalAId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_fabula_animalAId` ON `${TABLE_NAME}` (`animalAId`)"
+          },
+          {
+            "name": "index_fabula_animalBId",
+            "unique": false,
+            "columnNames": [
+              "animalBId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_fabula_animalBId` ON `${TABLE_NAME}` (`animalBId`)"
+          },
+          {
+            "name": "index_fabula_encargoId",
+            "unique": false,
+            "columnNames": [
+              "encargoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_fabula_encargoId` ON `${TABLE_NAME}` (`encargoId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "animal",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "animalAId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "animal",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "animalBId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "encargo",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "encargoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "tramo",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `fabulaId` INTEGER NOT NULL, `tipoTramo` TEXT NOT NULL, `texto` TEXT NOT NULL, FOREIGN KEY(`fabulaId`) REFERENCES `fabula`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fabulaId",
+            "columnName": "fabulaId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipoTramo",
+            "columnName": "tipoTramo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "texto",
+            "columnName": "texto",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_tramo_fabulaId",
+            "unique": false,
+            "columnNames": [
+              "fabulaId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tramo_fabulaId` ON `${TABLE_NAME}` (`fabulaId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "fabula",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fabulaId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "ejercicio",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `tipo` TEXT NOT NULL, `textoResultado` TEXT NOT NULL, `confirmado` INTEGER NOT NULL, `cantidad` INTEGER NOT NULL, `fechaEpochMillis` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipo",
+            "columnName": "tipo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "textoResultado",
+            "columnName": "textoResultado",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "confirmado",
+            "columnName": "confirmado",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cantidad",
+            "columnName": "cantidad",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaEpochMillis",
+            "columnName": "fechaEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "pagina_cuaderno",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`herramienta` TEXT NOT NULL, `fraseElegida` TEXT, `fechaGuardadaEpochMillis` INTEGER, PRIMARY KEY(`herramienta`))",
+        "fields": [
+          {
+            "fieldPath": "herramienta",
+            "columnName": "herramienta",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fraseElegida",
+            "columnName": "fraseElegida",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "fechaGuardadaEpochMillis",
+            "columnName": "fechaGuardadaEpochMillis",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "herramienta"
+          ]
+        }
+      },
+      {
+        "tableName": "intento",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `fabulaId` INTEGER NOT NULL, `tipo` TEXT NOT NULL, `fueCorrecto` INTEGER NOT NULL, `cantidad` INTEGER NOT NULL, `fechaEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`fabulaId`) REFERENCES `fabula`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fabulaId",
+            "columnName": "fabulaId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipo",
+            "columnName": "tipo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fueCorrecto",
+            "columnName": "fueCorrecto",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cantidad",
+            "columnName": "cantidad",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaEpochMillis",
+            "columnName": "fechaEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_intento_fabulaId",
+            "unique": false,
+            "columnNames": [
+              "fabulaId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_intento_fabulaId` ON `${TABLE_NAME}` (`fabulaId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "fabula",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fabulaId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "insignia",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `nombre` TEXT NOT NULL, `descripcion` TEXT NOT NULL, `obtenida` INTEGER NOT NULL, `fechaObtencionEpochMillis` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descripcion",
+            "columnName": "descripcion",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "obtenida",
+            "columnName": "obtenida",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fechaObtencionEpochMillis",
+            "columnName": "fechaObtencionEpochMillis",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "racha",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `rachaActual` INTEGER NOT NULL, `ultimaFechaJuegoEpochDay` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rachaActual",
+            "columnName": "rachaActual",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ultimaFechaJuegoEpochDay",
+            "columnName": "ultimaFechaJuegoEpochDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6a906d588f1accfdde09aa3850aebe91')"
+    ]
+  }
+}
