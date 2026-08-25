@@ -18,6 +18,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import pe.appmobile.fabricadehistorias.ui.components.BotonGrande
+import pe.appmobile.fabricadehistorias.ui.components.EncabezadoDeEstacion
+import pe.appmobile.fabricadehistorias.ui.theme.Arte
 import pe.appmobile.fabricadehistorias.ui.theme.PapelEnvejecido
 import pe.appmobile.fabricadehistorias.ui.theme.TintaProfunda
 import pe.appmobile.fabricadehistorias.ui.theme.VerdeMusgo
@@ -41,28 +43,29 @@ fun TallerScreen(
             .fillMaxSize()
             .background(PapelEnvejecido)
             .verticalScroll(rememberScrollState())
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("El taller de Antuco", style = MaterialTheme.typography.headlineMedium, color = TintaProfunda)
-        Text(
-            "Hola, $alias. Racha de $racha día(s).",
-            style = MaterialTheme.typography.bodyLarge,
-            color = TintaProfunda,
-            modifier = Modifier.semantics { contentDescription = "Hola $alias, racha de $racha dias" }
-        )
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            InfoCorta("Auditorio", "$aforoAuditorio animales")
-            InfoCorta("Visitantes", "$visitantesRecibidos de 12")
-        }
+        EncabezadoDeEstacion(Arte.fondoDeEstacion("home"), "El taller de Antuco")
 
-        BotonGrande("Fabricar una nueva historia", onNuevaFabula, Modifier.fillMaxWidth())
-        BotonGrande("Sala de Pulido", onSalaDePulido, Modifier.fillMaxWidth())
-        BotonGrande("El Fabulario", onFabulario, Modifier.fillMaxWidth())
-        BotonGrande("Galería de Visitantes", onGaleriaVisitantes, Modifier.fillMaxWidth())
-        BotonGrande("Cuaderno del Aprendiz", onCuadernoAprendiz, Modifier.fillMaxWidth())
-        BotonGrande("Rincón de Práctica", onRinconPractica, Modifier.fillMaxWidth())
-        BotonGrande("Ajustes", onAjustes, Modifier.fillMaxWidth())
+        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text(
+                "Hola, $alias. Racha de $racha día(s).",
+                style = MaterialTheme.typography.bodyLarge,
+                color = TintaProfunda,
+                modifier = Modifier.semantics { contentDescription = "Hola $alias, racha de $racha dias" }
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                InfoCorta("Auditorio", "$aforoAuditorio animales")
+                InfoCorta("Visitantes", "$visitantesRecibidos de 12")
+            }
+
+            BotonGrande("Fabricar una nueva historia", onNuevaFabula, Modifier.fillMaxWidth())
+            BotonGrande("Sala de Pulido", onSalaDePulido, Modifier.fillMaxWidth())
+            BotonGrande("El Fabulario", onFabulario, Modifier.fillMaxWidth())
+            BotonGrande("Galería de Visitantes", onGaleriaVisitantes, Modifier.fillMaxWidth())
+            BotonGrande("Cuaderno del Aprendiz", onCuadernoAprendiz, Modifier.fillMaxWidth())
+            BotonGrande("Rincón de Práctica", onRinconPractica, Modifier.fillMaxWidth())
+            BotonGrande("Ajustes", onAjustes, Modifier.fillMaxWidth())
+        }
     }
 }
 

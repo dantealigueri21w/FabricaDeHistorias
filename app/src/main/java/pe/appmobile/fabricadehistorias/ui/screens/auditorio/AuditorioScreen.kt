@@ -27,7 +27,10 @@ import pe.appmobile.fabricadehistorias.domain.model.Tramo
 import pe.appmobile.fabricadehistorias.ui.components.BotonGrande
 import pe.appmobile.fabricadehistorias.ui.components.BurbujaAntuco
 import pe.appmobile.fabricadehistorias.ui.components.CampoEscritura
+import pe.appmobile.fabricadehistorias.ui.components.EncabezadoDeEstacion
+import pe.appmobile.fabricadehistorias.ui.components.PoseAntuco
 import pe.appmobile.fabricadehistorias.ui.components.TarjetaSeleccionable
+import pe.appmobile.fabricadehistorias.ui.theme.Arte
 import pe.appmobile.fabricadehistorias.ui.theme.PapelEnvejecido
 import pe.appmobile.fabricadehistorias.ui.theme.TintaProfunda
 
@@ -58,50 +61,51 @@ fun AuditorioScreen(
             .fillMaxSize()
             .background(PapelEnvejecido)
             .verticalScroll(rememberScrollState())
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("El Auditorio", style = MaterialTheme.typography.headlineMedium, color = TintaProfunda)
-        Text("$aforoActual animales ya vienen a escuchar", style = MaterialTheme.typography.bodyLarge, color = TintaProfunda)
+        EncabezadoDeEstacion(Arte.fondoDeEstacion("auditorio"), "El Auditorio")
 
-        Text("Tu fábula", style = MaterialTheme.typography.titleLarge, color = TintaProfunda)
-        MotorEsqueleto.ordenNarrativo().forEach { tramo ->
-            val texto = tramos[tramo]
-            if (!texto.isNullOrBlank()) {
-                Text(texto, style = MaterialTheme.typography.bodyLarge, color = TintaProfunda)
+        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text("$aforoActual animales ya vienen a escuchar", style = MaterialTheme.typography.bodyLarge, color = TintaProfunda)
+
+            Text("Tu fábula", style = MaterialTheme.typography.titleLarge, color = TintaProfunda)
+            MotorEsqueleto.ordenNarrativo().forEach { tramo ->
+                val texto = tramos[tramo]
+                if (!texto.isNullOrBlank()) {
+                    Text(texto, style = MaterialTheme.typography.bodyLarge, color = TintaProfunda)
+                }
             }
+
+            if (observaciones.isEmpty()) {
+                BurbujaAntuco("¡Se aplaude fuerte! Esta historia camina sola.", pose = PoseAntuco.CELEBRA)
+            } else {
+                observaciones.forEach { BurbujaAntuco(it, pose = PoseAntuco.CONFUNDIDO) }
+            }
+
+            CampoEscritura(titulo, { titulo = it }, "Ponle título a tu fábula")
+
+            Text("Arma la moraleja: Seño Herminia quiere saber qué enseña", style = MaterialTheme.typography.titleLarge, color = TintaProfunda)
+
+            piezasRelevantes.filter { it.parte == ParteMoraleja.INICIO }.forEach { pieza ->
+                TarjetaSeleccionable(pieza.texto, seleccionada = inicioElegido == pieza, onClick = { inicioElegido = pieza }, modifier = Modifier.fillMaxWidth())
+            }
+            piezasRelevantes.filter { it.parte == ParteMoraleja.FIN }.forEach { pieza ->
+                TarjetaSeleccionable(pieza.texto, seleccionada = finElegido == pieza, onClick = { finElegido = pieza }, modifier = Modifier.fillMaxWidth())
+            }
+
+            val moraleja = if (inicioElegido != null && finElegido != null) "${inicioElegido!!.texto} ${finElegido!!.texto}" else ""
+            if (moraleja.isNotBlank()) {
+                Text(moraleja, style = MaterialTheme.typography.bodyLarge, color = TintaProfunda)
+            }
+
+            val corresponde = moraleja.isNotBlank() &&
+                MotorMoraleja.correspondeConLosHechos(moraleja, listOf(caracterA.name, caracterB.name))
+
+            BotonGrande(
+                texto = if (corresponde) "Terminar y guardar en el Fabulario" else "Arma una moraleja que corresponda",
+                habilitado = corresponde && titulo.isNotBlank(),
+                onClick = { onTerminar(titulo, moraleja) },
+                modifier = Modifier.fillMaxWidth()
+            )
         }
-
-        if (observaciones.isEmpty()) {
-            BurbujaAntuco("¡Se aplaude fuerte! Esta historia camina sola.")
-        } else {
-            observaciones.forEach { BurbujaAntuco(it) }
-        }
-
-        CampoEscritura(titulo, { titulo = it }, "Ponle título a tu fábula")
-
-        Text("Arma la moraleja: Seño Herminia quiere saber qué enseña", style = MaterialTheme.typography.titleLarge, color = TintaProfunda)
-
-        piezasRelevantes.filter { it.parte == ParteMoraleja.INICIO }.forEach { pieza ->
-            TarjetaSeleccionable(pieza.texto, seleccionada = inicioElegido == pieza, onClick = { inicioElegido = pieza }, modifier = Modifier.fillMaxWidth())
-        }
-        piezasRelevantes.filter { it.parte == ParteMoraleja.FIN }.forEach { pieza ->
-            TarjetaSeleccionable(pieza.texto, seleccionada = finElegido == pieza, onClick = { finElegido = pieza }, modifier = Modifier.fillMaxWidth())
-        }
-
-        val moraleja = if (inicioElegido != null && finElegido != null) "${inicioElegido!!.texto} ${finElegido!!.texto}" else ""
-        if (moraleja.isNotBlank()) {
-            Text(moraleja, style = MaterialTheme.typography.bodyLarge, color = TintaProfunda)
-        }
-
-        val corresponde = moraleja.isNotBlank() &&
-            MotorMoraleja.correspondeConLosHechos(moraleja, listOf(caracterA.name, caracterB.name))
-
-        BotonGrande(
-            texto = if (corresponde) "Terminar y guardar en el Fabulario" else "Arma una moraleja que corresponda",
-            habilitado = corresponde && titulo.isNotBlank(),
-            onClick = { onTerminar(titulo, moraleja) },
-            modifier = Modifier.fillMaxWidth()
-        )
     }
 }

@@ -25,6 +25,8 @@ import pe.appmobile.fabricadehistorias.domain.engine.MotorPrensa
 import pe.appmobile.fabricadehistorias.ui.components.BotonGrande
 import pe.appmobile.fabricadehistorias.ui.components.BurbujaAntuco
 import pe.appmobile.fabricadehistorias.ui.components.CampoEscritura
+import pe.appmobile.fabricadehistorias.ui.components.EncabezadoDeEstacion
+import pe.appmobile.fabricadehistorias.ui.theme.Arte
 import pe.appmobile.fabricadehistorias.ui.theme.PapelEnvejecido
 import pe.appmobile.fabricadehistorias.ui.theme.TintaProfunda
 
@@ -44,10 +46,9 @@ fun SalaPulidoScreen(
             .fillMaxSize()
             .background(PapelEnvejecido)
             .verticalScroll(rememberScrollState())
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("La Sala de Pulido", style = MaterialTheme.typography.headlineMedium, color = TintaProfunda)
+        EncabezadoDeEstacion(Arte.fondoDeEstacion("pulido"), "La Sala de Pulido")
+        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             BotonGrande("Prensa", { maquina = MaquinaPulido.PRENSA }, Modifier.weight(1f))
@@ -55,10 +56,11 @@ fun SalaPulidoScreen(
             BotonGrande("Criba", { maquina = MaquinaPulido.CRIBA }, Modifier.weight(1f))
         }
 
-        when (maquina) {
-            MaquinaPulido.PRENSA -> MaquinaPrensa(onConfirmarPrensa)
-            MaquinaPulido.FUELLE -> MaquinaFuelle(onConfirmarFuelle)
-            MaquinaPulido.CRIBA -> MaquinaCriba(onConfirmarCriba)
+            when (maquina) {
+                MaquinaPulido.PRENSA -> MaquinaPrensa(onConfirmarPrensa)
+                MaquinaPulido.FUELLE -> MaquinaFuelle(onConfirmarFuelle)
+                MaquinaPulido.CRIBA -> MaquinaCriba(onConfirmarCriba)
+            }
         }
     }
 }

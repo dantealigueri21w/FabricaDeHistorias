@@ -22,6 +22,8 @@ import pe.appmobile.fabricadehistorias.domain.model.Tramo
 import pe.appmobile.fabricadehistorias.ui.components.BotonGrande
 import pe.appmobile.fabricadehistorias.ui.components.BurbujaAntuco
 import pe.appmobile.fabricadehistorias.ui.components.CampoEscritura
+import pe.appmobile.fabricadehistorias.ui.components.EncabezadoDeEstacion
+import pe.appmobile.fabricadehistorias.ui.theme.Arte
 import pe.appmobile.fabricadehistorias.ui.theme.PapelEnvejecido
 import pe.appmobile.fabricadehistorias.ui.theme.TintaProfunda
 
@@ -55,34 +57,35 @@ fun MesaEsqueletoScreen(
             .fillMaxSize()
             .background(PapelEnvejecido)
             .verticalScroll(rememberScrollState())
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("La Mesa del Esqueleto", style = MaterialTheme.typography.headlineMedium, color = TintaProfunda)
-        BurbujaAntuco("El Bululú te presta su orden: sigue los seis tramos, uno por uno.")
+        EncabezadoDeEstacion(Arte.fondoDeEstacion("mesa"), "La Mesa del Esqueleto")
 
-        MotorEsqueleto.ordenNarrativo().forEach { tramo ->
-            CampoEscritura(
-                valor = textos.value[tramo] ?: "",
-                onValorCambia = { nuevo ->
-                    textos.value = textos.value + (tramo to nuevo)
-                    onGuardarTramo(tramo, nuevo)
-                },
-                etiqueta = ETIQUETAS.getValue(tramo),
-                ayuda = "Al menos ${MotorEsqueleto.PALABRAS_MINIMAS} palabras"
+        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            BurbujaAntuco("El Bululú te presta su orden: sigue los seis tramos, uno por uno.")
+
+            MotorEsqueleto.ordenNarrativo().forEach { tramo ->
+                CampoEscritura(
+                    valor = textos.value[tramo] ?: "",
+                    onValorCambia = { nuevo ->
+                        textos.value = textos.value + (tramo to nuevo)
+                        onGuardarTramo(tramo, nuevo)
+                    },
+                    etiqueta = ETIQUETAS.getValue(tramo),
+                    ayuda = "Al menos ${MotorEsqueleto.PALABRAS_MINIMAS} palabras"
+                )
+            }
+
+            if (lenteDesbloqueada) {
+                BotonGrande("Usar la Lente (comparar algo)", onUsarLente, Modifier.fillMaxWidth())
+            }
+
+            val completo = MotorEsqueleto.estaCompleto(textos.value)
+            BotonGrande(
+                texto = if (completo) "Llevarla al Auditorio" else "Faltan tramos por escribir",
+                habilitado = completo,
+                onClick = onContinuar,
+                modifier = Modifier.fillMaxWidth()
             )
         }
-
-        if (lenteDesbloqueada) {
-            BotonGrande("Usar la Lente (comparar algo)", onUsarLente, Modifier.fillMaxWidth())
-        }
-
-        val completo = MotorEsqueleto.estaCompleto(textos.value)
-        BotonGrande(
-            texto = if (completo) "Llevarla al Auditorio" else "Faltan tramos por escribir",
-            habilitado = completo,
-            onClick = onContinuar,
-            modifier = Modifier.fillMaxWidth()
-        )
     }
 }

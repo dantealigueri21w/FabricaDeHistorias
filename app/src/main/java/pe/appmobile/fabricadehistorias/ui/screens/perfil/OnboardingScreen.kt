@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import pe.appmobile.fabricadehistorias.ui.components.BotonGrande
 import pe.appmobile.fabricadehistorias.ui.components.CampoEscritura
 import pe.appmobile.fabricadehistorias.ui.components.TarjetaSeleccionable
+import pe.appmobile.fabricadehistorias.ui.theme.Arte
 import pe.appmobile.fabricadehistorias.ui.theme.PapelEnvejecido
 import pe.appmobile.fabricadehistorias.ui.theme.TintaProfunda
 
@@ -70,7 +71,8 @@ fun OnboardingScreen(onListo: (alias: String, avatarId: Int) -> Unit) {
                         titulo = avatar.descripcion,
                         seleccionada = avatarElegido == avatar.id,
                         onClick = { avatarElegido = avatar.id },
-                        modifier = Modifier.weight(1f).size(80.dp)
+                        modifier = Modifier.weight(1f),
+                        imagenId = Arte.avatar(avatar.id)
                     )
                 }
             }

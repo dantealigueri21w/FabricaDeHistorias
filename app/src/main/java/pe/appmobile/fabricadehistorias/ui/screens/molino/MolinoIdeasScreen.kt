@@ -23,7 +23,9 @@ import pe.appmobile.fabricadehistorias.domain.model.TipoDado
 import pe.appmobile.fabricadehistorias.domain.model.Tirada
 import pe.appmobile.fabricadehistorias.ui.components.BotonGrande
 import pe.appmobile.fabricadehistorias.ui.components.BurbujaAntuco
+import pe.appmobile.fabricadehistorias.ui.components.EncabezadoDeEstacion
 import pe.appmobile.fabricadehistorias.ui.components.TarjetaSeleccionable
+import pe.appmobile.fabricadehistorias.ui.theme.Arte
 import pe.appmobile.fabricadehistorias.ui.theme.PapelEnvejecido
 import pe.appmobile.fabricadehistorias.ui.theme.TintaProfunda
 import kotlin.random.Random
@@ -39,33 +41,34 @@ fun MolinoIdeasScreen(onConfirmar: (Tirada) -> Unit) {
             .fillMaxSize()
             .background(PapelEnvejecido)
             .verticalScroll(rememberScrollState())
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("El Molino de Ideas", style = MaterialTheme.typography.headlineMedium, color = TintaProfunda)
-        BurbujaAntuco("Fortunato echó las suertes. Estas son tus piezas.")
+        EncabezadoDeEstacion(Arte.fondoDeEstacion("molino"), "El Molino de Ideas")
 
-        tirada.caras.forEach { cara ->
-            TarjetaSeleccionable(
-                titulo = cara.texto,
-                subtitulo = if (cara.tipo in tirada.fijadas) "Fijada" else "Toca para fijar",
-                seleccionada = cara.tipo in tirada.fijadas,
-                onClick = { tirada = MotorDados.fijar(tirada, cara.tipo) },
-                modifier = Modifier.fillMaxWidth()
-            )
+        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            BurbujaAntuco("Fortunato echó las suertes. Estas son tus piezas.")
+
+            tirada.caras.forEach { cara ->
+                TarjetaSeleccionable(
+                    titulo = cara.texto,
+                    subtitulo = if (cara.tipo in tirada.fijadas) "Fijada" else "Toca para fijar",
+                    seleccionada = cara.tipo in tirada.fijadas,
+                    onClick = { tirada = MotorDados.fijar(tirada, cara.tipo) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            if (!yaRelanzo) {
+                BotonGrande(
+                    "Relanzar lo que no fijé",
+                    {
+                        tirada = MotorDados.relanzarNoFijados(tirada, SemillaDados.caras, Random.Default)
+                        yaRelanzo = true
+                    },
+                    Modifier.fillMaxWidth()
+                )
+            }
+
+            BotonGrande("Usar estas piezas", { onConfirmar(tirada) }, Modifier.fillMaxWidth())
         }
-
-        if (!yaRelanzo) {
-            BotonGrande(
-                "Relanzar lo que no fijé",
-                {
-                    tirada = MotorDados.relanzarNoFijados(tirada, SemillaDados.caras, Random.Default)
-                    yaRelanzo = true
-                },
-                Modifier.fillMaxWidth()
-            )
-        }
-
-        BotonGrande("Usar estas piezas", { onConfirmar(tirada) }, Modifier.fillMaxWidth())
     }
 }

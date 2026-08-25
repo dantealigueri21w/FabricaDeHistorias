@@ -24,7 +24,9 @@ import pe.appmobile.fabricadehistorias.domain.model.Caracter
 import pe.appmobile.fabricadehistorias.domain.model.FuerzaChoque
 import pe.appmobile.fabricadehistorias.ui.components.BotonGrande
 import pe.appmobile.fabricadehistorias.ui.components.BurbujaAntuco
+import pe.appmobile.fabricadehistorias.ui.components.EncabezadoDeEstacion
 import pe.appmobile.fabricadehistorias.ui.components.TarjetaSeleccionable
+import pe.appmobile.fabricadehistorias.ui.theme.Arte
 import pe.appmobile.fabricadehistorias.ui.theme.PapelEnvejecido
 import pe.appmobile.fabricadehistorias.ui.theme.TintaProfunda
 
@@ -46,46 +48,49 @@ fun RuedaAnimalesScreen(
             .fillMaxSize()
             .background(PapelEnvejecido)
             .verticalScroll(rememberScrollState())
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("La Rueda de Animales", style = MaterialTheme.typography.headlineMedium, color = TintaProfunda)
-        BurbujaAntuco(encargoTexto)
+        EncabezadoDeEstacion(Arte.fondoDeEstacion("rueda"), "La Rueda de Animales")
 
-        Text("Toca dos animales que choquen", style = MaterialTheme.typography.titleLarge, color = TintaProfunda)
+        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            BurbujaAntuco(encargoTexto)
 
-        animales.chunked(3).forEach { fila ->
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                fila.forEach { animal ->
-                    TarjetaSeleccionable(
-                        titulo = animal.nombre,
-                        subtitulo = animal.region,
-                        seleccionada = animal.id == animalA?.id || animal.id == animalB?.id,
-                        onClick = {
-                            when {
-                                animalA?.id == animal.id -> animalA = null
-                                animalB?.id == animal.id -> animalB = null
-                                animalA == null -> animalA = animal
-                                animalB == null -> animalB = animal
-                                else -> { animalA = animalB; animalB = animal }
-                            }
-                        },
-                        modifier = Modifier.weight(1f)
-                    )
+            Text("Toca dos animales que choquen", style = MaterialTheme.typography.titleLarge, color = TintaProfunda)
+
+            animales.chunked(3).forEach { fila ->
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    fila.forEach { animal ->
+                        val imagen = Arte.animalONull(animal.id)
+                        TarjetaSeleccionable(
+                            titulo = animal.nombre,
+                            subtitulo = animal.region,
+                            seleccionada = animal.id == animalA?.id || animal.id == animalB?.id,
+                            onClick = {
+                                when {
+                                    animalA?.id == animal.id -> animalA = null
+                                    animalB?.id == animal.id -> animalB = null
+                                    animalA == null -> animalA = animal
+                                    animalB == null -> animalB = animal
+                                    else -> { animalA = animalB; animalB = animal }
+                                }
+                            },
+                            modifier = Modifier.weight(1f),
+                            imagenId = imagen
+                        )
+                    }
                 }
             }
-        }
 
-        val a = animalA
-        val b = animalB
-        if (a != null && b != null) {
-            val choque = MotorPersonajes.choqueEntre(Caracter.valueOf(a.caracter), Caracter.valueOf(b.caracter))
-            Text(
-                texto(choque.fuerza, a.nombre, b.nombre),
-                style = MaterialTheme.typography.bodyLarge,
-                color = TintaProfunda
-            )
-            BotonGrande("Fabricar con estos dos", { onConfirmar(a, b) }, Modifier.fillMaxWidth())
+            val a = animalA
+            val b = animalB
+            if (a != null && b != null) {
+                val choque = MotorPersonajes.choqueEntre(Caracter.valueOf(a.caracter), Caracter.valueOf(b.caracter))
+                Text(
+                    texto(choque.fuerza, a.nombre, b.nombre),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = TintaProfunda
+                )
+                BotonGrande("Fabricar con estos dos", { onConfirmar(a, b) }, Modifier.fillMaxWidth())
+            }
         }
     }
 }
