@@ -157,7 +157,7 @@ Nada de esto afecta la regla central: **el mecanismo es el contenido en las ocho
 - [x] `grep` de herramientas de IA no devuelve nada — encontró y corrigió una mención real durante esta misma verificación
 - [x] `git log` muestra solo la identidad del proyecto (`dantealigueri21w`)
 - [x] La raíz es la de la sección 14.1, sin carpeta intermedia
-- [x] No quedan dentro `.claude/`, `build/`, `.gradle/`, `.kotlin/`, `local.properties` ni notas internas
+- [x] No quedan dentro carpetas de configuración de asistentes de IA, `build/`, `.gradle/`, `.kotlin/`, `local.properties` ni notas internas
 - [x] La memoria descriptiva y el manual **no** están dentro: son de la fase 2
 - [x] Este reporte tiene salidas reales, incluido un error real encontrado y corregido
 - [x] Peso del código — 490 KB, dentro de lo esperado (sección 4)
