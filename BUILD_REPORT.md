@@ -57,7 +57,7 @@ BUILD SUCCESSFUL
 |---|---|
 | Archivo | `app/build/outputs/apk/debug/app-debug.apk` |
 | Tamaño | 23 MB (20 MB de código + 3,2 MB de las 65 ilustraciones, todas integradas) |
-| SHA-256 | `fdd58abae365b0153fe15784d8d499cae6e0bba51e3b36b663490dcc1340c073` |
+| SHA-256 | `8fcb97f61575a982a5c06e0d1f8b3e5795fdbc9f79effbbca8fdb3323ffac129` |
 | Firma | `apksigner verify --print-certs` → válida, **V2**, `CN=Android Debug` (llave por defecto, sin datos personales) |
 | `applicationId` | `pe.appmobile.fabricadehistorias` |
 | `versionName` / `versionCode` | `1.0.0` / `1` |
@@ -87,16 +87,27 @@ Se corrigieron las ocho piezas para que cada inicio contenga literalmente la pal
 
 Un segundo caso menor: `MotorAuditorio` inicialmente revisaba repetición de palabras sobre la fábula completa (los seis tramos unidos), lo que marcaba como "repetido" el nombre del protagonista por aparecer tres veces en seis escenas — narrativa normal, no un defecto. Se corrigió para revisar cada tramo por separado, que es donde una repetición real importa.
 
+**Un tercer caso, encontrado el 24/08/2026 por aviso directo del usuario ("la imagen del cuy sale con la parte blanca con cosas negras, revisa que no haya errores en ninguna imagen"):** `quitar_fondo_blanco()` en `arte/procesar_arte.py` volvía transparente **cualquier píxel parecido al color de fondo, estuviera o no conectado al fondo real**. El pelaje crema del cuy, el relleno claro de las insignias y otras zonas de color pálido dentro de los propios personajes caían dentro de esa tolerancia y quedaban parcial o totalmente transparentes — no una mancha, sino un agujero real hacia lo que hubiera detrás en la app. Una auditoría por código (no visual) sobre las 65 ilustraciones — contando componentes conexas del canal alfa que no tocan el borde de la imagen — encontró el mismo problema en **45 de los 65 archivos**, con áreas de hasta 30 000 píxeles en un solo archivo (`animal_pelicano`).
+
+La causa era usar un umbral de color global en vez de un relleno por inundación desde el borde (la misma diferencia entre "borra todo lo blancuzco" y la varita mágica de un editor de imágenes, que solo borra el blancuzco *conectado* al fondo). Se corrigió `quitar_fondo_blanco()` para que solo el fondo real —conectado al borde de la celda— se vuelva transparente; una zona clara encerrada por el contorno oscuro del personaje, aunque tenga el mismo color, ya no se toca. Las 56 piezas recortadas de cuadrícula se regeneraron desde las imágenes originales de Gemini (no desde los WebP ya dañados: el canal RGB bajo alfa=0 resultó estar degradado por la compresión con pérdida, algunos píxeles literalmente en negro puro, así que reconstruir desde ahí no era una opción). La misma auditoría, repetida después, dio **0 de 65** con agujeros internos.
+
+De paso, la re-generación completa reveló seis casos más del problema de sangrado de celda vecina descrito arriba (el recorte mecánico es el mismo de antes, así que el cóndor volvió a invadir al cuy): `animal_cuy` (esta vez con un sangrado real de casi la mitad de la celda — el ala extendida del cóndor, medida por análisis de píxeles, no a ojo), `animal_tortuga_charapa`, `animal_otorongo`, `animal_vicuna`, `visitante_dona_eusebia` y `antuco_piensa`. Se corrigieron igual que la primera vez, con recortes más angostos calculados por el mismo método de medición. Dos alertas automáticas más resultaron ser falsos positivos tras revisión visual, no errores: los papeles volando en `antuco_confundido` y los retazos de tela junto a `visitante_dona_puntada` son elementos de diseño que el propio prompt pedía ("papeles cayéndosele alrededor", "retazos de tela de colores alrededor"), simplemente no están pegados al personaje.
+
+**Un hallazgo aparte, de estilo y no de error técnico:** `insignia_puerta_abierta` e `insignia_buena_prensa` tienen un fondo distinto al resto del set de insignias (uno oscuro nocturno, el otro un remiendo verde/violeta) en vez del círculo crema plano y uniforme de las otras diez. Gemini se apartó del estilo ahí; queda tal cual salió, ya que no es un defecto de procesamiento — es una decisión de regenerar esas dos o no.
+
+APK reconstruido y reverificado después de este arreglo: mismos 135 tests, 0 errores de lint, `BUILD SUCCESSFUL`, hash actualizado abajo.
+
 ---
 
 ## Qué sigue simplificado — dicho, no escondido
 
 **El arte está completo: las 65 ilustraciones de la ficha están integradas (24/08/2026, tercera pasada).** Antuco (6 poses), los 9 fondos de estación, los 18 animales, los 12 visitantes, las 12 insignias, los 8 avatares y el ícono del lanzador son todos imágenes reales, generadas con `arte/38-FABRICA-DE-HISTORIAS-PROMPTS.md` y procesadas con `arte/procesar_arte.py`. `ui/theme/Arte.kt` centraliza la traducción de cada id de dominio a su recurso, siguiendo el mismo patrón que Numerópolis.
 
-**Dos rondas de corrección real sobre las imágenes generadas, no solo "se pegaron y ya":**
+**Tres rondas de corrección real sobre las imágenes generadas, no solo "se pegaron y ya":**
 
 1. **Costa y sierra salieron con texto la primera vez** (nombres en inglés incrustados bajo cada animal, violando la sección 4 del prompt maestro sin excepción). Se identificó la causa probable —la lista de sujetos estaba redactada como ficha de identificación ("Pelícano, presumido —"), un formato que por convención lleva etiqueta— y se reescribió como frase natural más un reencuadre explícito ("pegatinas de personaje, no lámina de especies"). Las dos tandas regeneradas salieron limpias.
-2. **Seis de las 18 piezas de animal tenían fragmentos de la celda vecina** (alas, patas o manchas de un animal contiguo colándose por el borde — la pose del cóndor con las alas extendidas invadía físicamente la celda del cuy en la imagen original de Gemini, por ejemplo). Se detectó revisando cada imagen una por una antes de darlas por buenas, no automáticamente, y se corrigió recortando cada celda afectada con un margen más angosto del lado del vecino, en vez de aceptar el recorte mecánico por defecto.
+2. **Fragmentos de la celda vecina** (alas, patas o manchas de un animal contiguo colándose por el borde del recorte mecánico) aparecieron en varias piezas en dos rondas distintas — la primera vez detectados a simple vista, la segunda con recortes medidos por análisis de píxeles en vez de a ojo, después de que una estimación inicial resultara insuficiente para el ala extendida del cóndor.
+3. **El removedor de fondo se comía partes del propio pelaje o relleno claro de 45 de las 65 ilustraciones** (bug real de algoritmo, no de una imagen suelta — ver "Un error real que se encontró y se corrigió" más arriba para el detalle completo). Encontrado por aviso directo del usuario sobre el cuy, confirmado y corregido en las 65.
 
 **Un dato de honestidad sobre las insignias:** la cuadrícula que generó Gemini salió de 4×4 en vez de 4×3, repitiendo las últimas cuatro (Regla de Tres, Burlador Burlado, Espejo Limpio, Fabulista de la Casa) en la fila sobrante. Se usaron solo las primeras 12 celdas; la fila repetida se descartó al procesar, no se integró dos veces.
 
