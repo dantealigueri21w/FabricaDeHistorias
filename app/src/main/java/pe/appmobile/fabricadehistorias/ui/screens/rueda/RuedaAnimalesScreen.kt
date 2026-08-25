@@ -59,7 +59,6 @@ fun RuedaAnimalesScreen(
             animales.chunked(3).forEach { fila ->
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     fila.forEach { animal ->
-                        val imagen = Arte.animalONull(animal.id)
                         TarjetaSeleccionable(
                             titulo = animal.nombre,
                             subtitulo = animal.region,
@@ -74,7 +73,7 @@ fun RuedaAnimalesScreen(
                                 }
                             },
                             modifier = Modifier.weight(1f),
-                            imagenId = imagen
+                            imagenId = Arte.animal(animal.id)
                         )
                     }
                 }

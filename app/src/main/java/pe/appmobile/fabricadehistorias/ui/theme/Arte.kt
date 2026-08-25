@@ -7,10 +7,7 @@ import pe.appmobile.fabricadehistorias.R
  * Traduce los identificadores del dominio a sus ilustraciones.
  *
  * Está centralizado a propósito: si una ilustración cambia de nombre o falta,
- * se arregla en un solo sitio y no en quince pantallas. Los animales de costa
- * y sierra todavía no tienen ilustración real (las dos tandas generadas
- * salieron con texto incrustado y hay que regenerarlas — ver BUILD_REPORT.md),
- * así que [animal] cae a [MarcadorIlustracion] para esos doce hasta entonces.
+ * se arregla en un solo sitio y no en quince pantallas.
  */
 object Arte {
 
@@ -28,16 +25,26 @@ object Arte {
         else -> R.drawable.fondo_galeria_visitantes
     }
 
-    /** null si el animal todavía no tiene ilustración real (costa y sierra, pendientes). */
     @DrawableRes
-    fun animalONull(animalId: String): Int? = when (animalId) {
+    fun animal(animalId: String): Int = when (animalId) {
+        "pelicano" -> R.drawable.animal_pelicano
+        "lobo_marino" -> R.drawable.animal_lobo_marino
+        "cangrejo" -> R.drawable.animal_cangrejo
+        "gallinazo" -> R.drawable.animal_gallinazo
+        "piquero" -> R.drawable.animal_piquero
+        "cuculi" -> R.drawable.animal_cuculi
+        "zorro_andino" -> R.drawable.animal_zorro_andino
+        "cuy" -> R.drawable.animal_cuy
+        "condor" -> R.drawable.animal_condor
+        "vicuna" -> R.drawable.animal_vicuna
+        "sapo" -> R.drawable.animal_sapo
+        "vizcacha" -> R.drawable.animal_vizcacha
         "otorongo" -> R.drawable.animal_otorongo
         "guacamayo" -> R.drawable.animal_guacamayo
         "boa" -> R.drawable.animal_boa
         "tortuga_charapa" -> R.drawable.animal_tortuga_charapa
         "delfin_rosado" -> R.drawable.animal_delfin_rosado
-        "perezoso" -> R.drawable.animal_perezoso
-        else -> null
+        else -> R.drawable.animal_perezoso
     }
 
     @DrawableRes
