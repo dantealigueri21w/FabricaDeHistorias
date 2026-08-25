@@ -123,8 +123,6 @@ Para lo que sigue sin arte propio (donde `MarcadorIlustracion` sigue en pie, por
 
 **Los ajustes no sobreviven al cierre.** Sonido y vibración se guardan en memoria de Compose, no en disco. Vuelven a su valor inicial al reabrir la app.
 
-**El icono del lanzador es un marcador vectorial**, no la ilustración final (un engranaje con una pluma, en la paleta del taller). Se reemplaza cuando el ícono definitivo salga del generador de imágenes.
-
 Nada de esto afecta la regla central: **el mecanismo es el contenido en las ocho estaciones activas**. En ninguna se elige entre opciones — se giran ruedas de personaje, se lanzan dados, se escribe en seis tramos con restricciones reales, se combinan y expanden frases propias, se compara, se arma una moraleja que el motor verifica contra los hechos, y el auditorio reacciona a propiedades reales del texto guardado.
 
 ---
