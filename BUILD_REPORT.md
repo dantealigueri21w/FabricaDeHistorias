@@ -56,8 +56,8 @@ BUILD SUCCESSFUL
 | Dato | Valor |
 |---|---|
 | Archivo | `app/build/outputs/apk/debug/app-debug.apk` |
-| Tamaño | 20 MB |
-| SHA-256 | `b4d9758d6ae36db773c63e464dd7f2b8f0307cf004ea400b86db4bdb9537a467` |
+| Tamaño | 22 MB (20 MB de código + 2,6 MB de las primeras 53 ilustraciones) |
+| SHA-256 | `d149956b1f77f0f8f6739a0afa84b0c5d54b7754244e82fd4e67f11d98b475b3` |
 | Firma | `apksigner verify --print-certs` → válida, **V2**, `CN=Android Debug` (llave por defecto, sin datos personales) |
 | `applicationId` | `pe.appmobile.fabricadehistorias` |
 | `versionName` / `versionCode` | `1.0.0` / `1` |
@@ -91,7 +91,13 @@ Un segundo caso menor: `MotorAuditorio` inicialmente revisaba repetición de pal
 
 ## Qué sigue simplificado — dicho, no escondido
 
-**No hay ni una sola ilustración integrada todavía.** Las pantallas usan `MarcadorIlustracion`, un marcador con la paleta real del taller (violeta, dorado, verde musgo) en vez de gris genérico, para que la app compile, se vea coherente con su identidad y se pruebe de verdad mientras se genera el arte por separado. Cuando lleguen las ~58 ilustraciones (guía en `02-GUIA-IMAGENES.md` y prompts en `arte/38-FABRICA-DE-HISTORIAS-PROMPTS.md`), cada `MarcadorIlustracion("nombre")` se cambia mecánicamente por `Image(painterResource(R.drawable.nombre), ...)`. Es el mismo orden que ya funcionó en Numerópolis: lógica y pantallas primero, arte integrado en una pasada aparte.
+**El arte está parcialmente integrado: 53 de 65 ilustraciones (24/08/2026, segunda pasada).** Antuco (6 poses), los 9 fondos de estación, los 12 visitantes, las 12 insignias, los 8 avatares y el ícono del lanzador ya son imágenes reales, generadas con el documento `arte/38-FABRICA-DE-HISTORIAS-PROMPTS.md` y procesadas con `arte/procesar_arte.py`. `ui/theme/Arte.kt` centraliza la traducción de cada id de dominio a su recurso, siguiendo el mismo patrón que Numerópolis.
+
+**Faltan 12 de los 18 animales — costa y sierra.** Las dos tandas que Gemini generó salieron con etiquetas de texto incrustadas debajo de cada animal (en inglés, con la palabra del carácter en español entre paréntesis), lo que viola la sección 4 del prompt maestro ("ninguna imagen debe llevar texto incrustado") sin excepción. La tanda de selva sí salió limpia y ya está integrada. Hasta que se regeneren costa y sierra, `Arte.animalONull()` devuelve `null` para esos 12 animales y `RuedaAnimalesScreen` cae a `MarcadorIlustracion` (texto) para ellos — funcional, pero sin arte.
+
+**Un dato de honestidad sobre las insignias:** la cuadrícula que generó Gemini salió de 4×4 en vez de 4×3, repitiendo las últimas cuatro (Regla de Tres, Burlador Burlado, Espejo Limpio, Fabulista de la Casa) en la fila sobrante. Se usaron solo las primeras 12 celdas; la fila repetida se descartó al procesar, no se integró dos veces.
+
+Para lo que sigue sin arte (donde `MarcadorIlustracion` sigue en pie): la Sala de Pulido no muestra las tres máquinas como ilustración (solo el fondo de la estación), y el Fabulario y el Cuaderno del Aprendiz no llevan iconografía propia todavía — no estaba en el lote de 65 imágenes de la ficha. Es el mismo criterio de siempre: cuando llegue el arte que falta, cada `MarcadorIlustracion("nombre")` se cambia mecánicamente por `Image(painterResource(R.drawable.nombre), ...)`.
 
 **Las interacciones "arrastra" de la ficha se implementaron con toque, no con gesto físico de arrastre.** La Rueda de Animales se toca en vez de arrastrar, el Molino se lanza con un botón, la Mesa se llena tocando cada campo. Sigue siendo la sección 1 cumplida —el niño manipula piezas reales, no elige entre cuatro opciones—, pero con un gesto más simple, más accesible (funciona igual con lector de pantalla) y más confiable de probar con Robolectric, que no maneja bien gestos de arrastre complejos. Si se quiere el gesto físico de arrastre después, es un cambio de capa de interacción, no de mecánica.
 
@@ -116,12 +122,12 @@ Nada de esto afecta la regla central: **el mecanismo es el contenido en las ocho
 - [x] Ninguna pantalla principal es solo título + párrafo + botones
 - [x] Hay algo que coleccionar (Fabulario, Galería, Cuaderno) y razones para volver (racha, visitantes, encargos)
 - [x] Todas las funciones prometidas tienen lógica y persistencia reales
-- [ ] Arte propio en toda la interfaz — **pendiente**, marcadores por ahora (ver arriba)
+- [~] Arte propio en toda la interfaz — **53 de 65 imágenes integradas**; faltan 12 animales (costa y sierra, a regenerar sin texto) y algunos iconos secundarios (ver arriba)
 
 **Contenido**
 - [x] 18 animales, 12 visitantes, 24 encargos, 12 insignias, 36 caras de dados, 24 piezas de moraleja — completo y verificado por asserts al generar `sample_data.sql`
 - [x] Español natural, con fauna y contexto peruano real (costa, sierra, selva)
-- [ ] Ilustraciones mínimas de la sección 4 — pendientes de generar
+- [~] Ilustraciones mínimas de la sección 4 — 53/65 listas; faltan 12 animales sin texto incrustado
 
 **Técnica**
 - [x] Versiones fijas y verificadas (sección 7)
