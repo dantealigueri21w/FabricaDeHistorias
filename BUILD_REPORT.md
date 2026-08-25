@@ -26,7 +26,7 @@ BUILD SUCCESSFUL in 1m 22s
 57 actionable tasks: 57 executed
 ```
 
-### `testDebugUnitTest` — 135 tests, 0 fallos
+### `testDebugUnitTest` — 137 tests, 0 fallos
 
 | Suite | Qué prueba | Tests |
 |---|---|---|
@@ -57,7 +57,7 @@ BUILD SUCCESSFUL
 |---|---|
 | Archivo | `app/build/outputs/apk/debug/app-debug.apk` |
 | Tamaño | 23 MB (20 MB de código + 3,2 MB de las 65 ilustraciones, todas integradas) |
-| SHA-256 | `8fcb97f61575a982a5c06e0d1f8b3e5795fdbc9f79effbbca8fdb3323ffac129` |
+| SHA-256 | `3596e8a011d6f47a5a3f915cfd0c4a9434019f527852e4415126a7622cd6f193` |
 | Firma | `apksigner verify --print-certs` → válida, **V2**, `CN=Android Debug` (llave por defecto, sin datos personales) |
 | `applicationId` | `pe.appmobile.fabricadehistorias` |
 | `versionName` / `versionCode` | `1.0.0` / `1` |
@@ -95,7 +95,9 @@ De paso, la re-generación completa reveló seis casos más del problema de sang
 
 **Un hallazgo aparte, de estilo y no de error técnico:** `insignia_puerta_abierta` e `insignia_buena_prensa` tienen un fondo distinto al resto del set de insignias (uno oscuro nocturno, el otro un remiendo verde/violeta) en vez del círculo crema plano y uniforme de las otras diez. Gemini se apartó del estilo ahí; queda tal cual salió, ya que no es un defecto de procesamiento — es una decisión de regenerar esas dos o no.
 
-APK reconstruido y reverificado después de este arreglo: mismos 135 tests, 0 errores de lint, `BUILD SUCCESSFUL`, hash actualizado abajo.
+**Un cuarto caso, encontrado el 24/08/2026 probando el APK en un teléfono real, no por revisión de código:** en el Molino de Ideas, tocar una pieza para fijarla llamaba siempre a `MotorDados.fijar()`, que solo agrega al conjunto de piezas fijadas — nunca quita. Una vez fijada una pieza por error, no había manera de soltarla desde la interfaz; había que gastar el único relanzamiento disponible para deshacer un toque accidental, o quedarse con una pieza que no se quería. Se agregó `MotorDados.quitarFijado()` (con `ContratoMoralejasTest`-style: primero el test en rojo con `TODO()`, confirmado el `NotImplementedError`, después la implementación) y la pantalla ahora alterna entre fijar y soltar según el estado actual de esa pieza — el mismo patrón que ya usaba la Rueda de Animales para sus dos animales elegidos, que nunca tuvo este problema. El texto bajo cada pieza también pasó de "Fijada" a "Fijada, toca para soltarla", para que la posibilidad de deshacer se vea, no haya que adivinarla.
+
+APK reconstruido y reverificado después de estos arreglos: 137 tests, 0 errores de lint, `BUILD SUCCESSFUL`, hash actualizado abajo.
 
 ---
 
@@ -144,7 +146,7 @@ Nada de esto afecta la regla central: **el mecanismo es el contenido en las ocho
 **Técnica**
 - [x] Versiones fijas y verificadas (sección 7)
 - [x] `domain/` se prueba sin UI · Room real · sin SQL en Composables
-- [x] 135 tests, todos pasan (mínimo de la sección 10 superado varias veces)
+- [x] 137 tests, todos pasan (mínimo de la sección 10 superado varias veces)
 - [x] Cada pantalla alcanzable tiene su test de Compose que la renderiza de verdad (sección 10.1)
 - [x] Sin permiso `INTERNET`, sin ningún otro permiso declarado
 - [x] Objetivos táctiles de 120 dp en `BotonGrande` y `TarjetaSeleccionable`

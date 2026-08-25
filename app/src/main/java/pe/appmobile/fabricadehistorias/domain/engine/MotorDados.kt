@@ -26,6 +26,9 @@ object MotorDados {
     fun fijar(tirada: Tirada, tipo: TipoDado): Tirada =
         tirada.copy(fijadas = tirada.fijadas + tipo)
 
+    fun quitarFijado(tirada: Tirada, tipo: TipoDado): Tirada =
+        tirada.copy(fijadas = tirada.fijadas - tipo)
+
     fun relanzarNoFijados(tirada: Tirada, caras: List<CaraDado>, aleatorio: Random): Tirada {
         val nuevas = tirada.caras.map { cara ->
             if (cara.tipo in tirada.fijadas) {

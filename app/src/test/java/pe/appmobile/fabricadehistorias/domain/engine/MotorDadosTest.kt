@@ -62,6 +62,26 @@ class MotorDadosTest {
     }
 
     @Test
+    fun `quitarFijado le quita la fijacion a ese tipo de dado`() {
+        val tirada = MotorDados.fijar(MotorDados.lanzar(caras, Random(2)), TipoDado.LUGAR)
+
+        val sinFijar = MotorDados.quitarFijado(tirada, TipoDado.LUGAR)
+
+        assertTrue(sinFijar.fijadas.isEmpty())
+    }
+
+    @Test
+    fun `quitarFijado no afecta a otros tipos fijados`() {
+        var tirada = MotorDados.lanzar(caras, Random(2))
+        tirada = MotorDados.fijar(tirada, TipoDado.LUGAR)
+        tirada = MotorDados.fijar(tirada, TipoDado.OBJETO)
+
+        val sinLugar = MotorDados.quitarFijado(tirada, TipoDado.LUGAR)
+
+        assertEquals(setOf(TipoDado.OBJETO), sinLugar.fijadas)
+    }
+
+    @Test
     fun `relanzar conserva la cara fijada`() {
         val tirada = MotorDados.fijar(MotorDados.lanzar(caras, Random(5)), TipoDado.OBJETO)
         val objetoOriginal = tirada.caras.first { it.tipo == TipoDado.OBJETO }

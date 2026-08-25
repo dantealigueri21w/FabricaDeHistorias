@@ -50,9 +50,15 @@ fun MolinoIdeasScreen(onConfirmar: (Tirada) -> Unit) {
             tirada.caras.forEach { cara ->
                 TarjetaSeleccionable(
                     titulo = cara.texto,
-                    subtitulo = if (cara.tipo in tirada.fijadas) "Fijada" else "Toca para fijar",
+                    subtitulo = if (cara.tipo in tirada.fijadas) "Fijada, toca para soltarla" else "Toca para fijar",
                     seleccionada = cara.tipo in tirada.fijadas,
-                    onClick = { tirada = MotorDados.fijar(tirada, cara.tipo) },
+                    onClick = {
+                        tirada = if (cara.tipo in tirada.fijadas) {
+                            MotorDados.quitarFijado(tirada, cara.tipo)
+                        } else {
+                            MotorDados.fijar(tirada, cara.tipo)
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
