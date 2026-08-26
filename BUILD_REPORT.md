@@ -58,7 +58,7 @@ BUILD SUCCESSFUL
 | Archivo | `app/build/outputs/apk/debug/app-debug.apk` |
 | Tamaño | 23 MB (20 MB de código + 3,2 MB de las 65 ilustraciones, todas integradas) |
 | SHA-256 (local) | `3596e8a011d6f47a5a3f915cfd0c4a9434019f527852e4415126a7622cd6f193` |
-| SHA-256 (GitHub Actions, el que se entrega) | `a7687745db20870213aba6d4917e65a1e2b9880d71cacc82c0a9e003520732f2` |
+| SHA-256 (GitHub Actions, el que se entrega) | `8ec39a9c0aeaa3b53022041fa7807b553181949f87a9c1fc66ab4afe76755561` |
 | Firma | `apksigner verify --print-certs` → válida, **V2**, `CN=Android Debug` (llave por defecto, sin datos personales) |
 | `applicationId` | `pe.appmobile.fabricadehistorias` |
 | `versionName` / `versionCode` | `1.0.0` / `1` |
